@@ -1,9 +1,16 @@
 <script lang="ts">
+  import SelectGroup from "./lib/SelectGroup.svelte";
+
+  type Group = {
+    id: string;
+    name: string;
+  };
   type UserInfo = {
     firstName?: string;
     lastName?: string;
     id: string;
     email: string;
+    groups: Group[];
   };
 
   const getUserInfoPromise = async () => {
@@ -11,6 +18,8 @@
     const data = await response.json();
     return data as UserInfo;
   };
+
+  let selectedGroup: Group;
 </script>
 
 {#await getUserInfoPromise()}
@@ -22,6 +31,11 @@
       <a href="/logout">Logout</a>
     </div>
   </nav>
+  {#if !selectedGroup}
+    <SelectGroup groups={userInfo.groups} bind:selectedGroup />
+  {:else}
+    <p>Selected group: {selectedGroup.name}</p>
+  {/if}
 {:catch error}
   <p>{error.message}</p>
 {/await}
