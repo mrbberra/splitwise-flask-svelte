@@ -1,7 +1,7 @@
 from flask import Flask, send_from_directory, session, redirect, url_for
 import splitwise
 from .lib import splitwise
-from .blueprints import auth
+from .blueprints import auth, api
 from .blueprints.auth import login_required
 import json
 import os
@@ -26,9 +26,15 @@ def create_app(test_config=None):
     # https://cabreraalex.medium.com/svelte-js-flask-combining-svelte-with-a-simple-backend-server-d1bc46190ab9
     # Path for all the static files (compiled JS/CSS, etc.)
     @login_required
+    @app.route('/client')
+    def client():
+      return send_from_directory('./client/dist', 'index.html')
+
+    @login_required
     @app.route('/client/<path:path>')
-    def client(path):
+    def client_internals(path):
       return send_from_directory('./client/dist', path)
 
     app.register_blueprint(auth.bp)
+    app.register_blueprint(api.bp)
     return app

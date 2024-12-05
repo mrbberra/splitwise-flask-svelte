@@ -1,6 +1,7 @@
 import functools
 from flask import Blueprint, redirect, request, session, url_for, g
 from ..lib.splitwise import get_splitwise
+import sys
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
@@ -33,7 +34,8 @@ def login_required(view):
   def wrapped_view(**kwargs):
     if 'access_token' not in session:
       return redirect(url_for('auth.login'))
-    if g.user is None:
+    if ('user' not in g) or (g.user is None):
+      print('Setting user')
       access_token = session['access_token']
       get_splitwise().setOAuth2AccessToken(access_token)
       g.user = get_splitwise().getCurrentUser()
