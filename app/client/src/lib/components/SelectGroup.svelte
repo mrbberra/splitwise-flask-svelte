@@ -1,6 +1,7 @@
 <script lang="ts">
-  export let groups: { id: string; name: string }[] = [];
-  export let selectedGroup: { id: string; name: string } | undefined;
+  import type { Group } from "../types";
+  export let groups: Group[] = [];
+  export let selectedGroup: Group | undefined;
 
   let selectedGroupIdUnconfirmed: string;
 

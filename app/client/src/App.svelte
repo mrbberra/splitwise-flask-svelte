@@ -1,17 +1,7 @@
 <script lang="ts">
-  import SelectGroup from "./lib/SelectGroup.svelte";
-
-  type Group = {
-    id: string;
-    name: string;
-  };
-  type UserInfo = {
-    firstName?: string;
-    lastName?: string;
-    id: string;
-    email: string;
-    groups: Group[];
-  };
+  import SelectGroup from "./lib/components/SelectGroup.svelte";
+  import FileUploader from "./lib/components/FileUploader.svelte";
+  import type { UserInfo, Group } from "./lib/types";
 
   const getUserInfoPromise = async () => {
     const response = await fetch("/api/me");
@@ -20,6 +10,7 @@
   };
 
   let selectedGroup: Group;
+  let uploadedFile: File;
 </script>
 
 {#await getUserInfoPromise()}
@@ -33,8 +24,8 @@
   </nav>
   {#if !selectedGroup}
     <SelectGroup groups={userInfo.groups} bind:selectedGroup />
-  {:else}
-    <p>Selected group: {selectedGroup.name}</p>
+  {:else if !uploadedFile}
+    <FileUploader />
   {/if}
 {:catch error}
   <p>{error.message}</p>

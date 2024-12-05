@@ -19,3 +19,8 @@ def me():
     'email': user.getEmail(),
     'groups': formatted_groups
   })
+
+@bp.route('/upload', methods=['POST'])
+@login_required
+def upload():
+  return jsonify({ 'message': 'Upload successful' })

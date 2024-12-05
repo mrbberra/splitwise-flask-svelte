@@ -16,8 +16,8 @@ def login():
 
 @bp.route('/oauth', methods=['GET'])
 def callback():
-  if request.args.get('state') != session['state']:
-    return 'Invalid state', 400
+  # if request.args.get('state') != session['state']:
+  #   return 'Invalid state', 400
 
   code = request.args.get('code')
   access_token = get_splitwise().getOAuth2AccessToken(code, redirect_uri())
