@@ -1,3 +1,6 @@
+# Configuration files
+**/secrets.json
+
 # Personal
 .tool-versions
 .vscode/
